@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/demo.css">
+
+<script type="text/javascript" src="js/lib/zepto.min.js"></script>
+<script type="text/javascript" src="js/lib/underscore-min.js"></script>
+<script type="text/javascript" src="js/lib/backbone-min.js"></script>
+
+<script type="text/javascript" src="js/demo.js"></script>
+<script type="text/javascript" src="js/utils.js"></script>
+<script type="text/javascript" src="js/models.js"></script>
+<script type="text/javascript" src="js/routes.js"></script>
+<script type="text/javascript" src="js/views.js"></script>
+
+<script type="text/javascript">
+	if (!$){$ = Zepto}; //zepto fix
+	
+	rss_url = "https://twitter.com/statuses/user_timeline/14972793.rss"
+	
+	$(Demo.init);
+</script>
+
+<body>
+
+<div id="content">
+</div>
+</body>
+
+</html>

@@ -1,0 +1,26 @@
+{
+	"uuid": "7483c32e3b9311e192f112313d1adcbe",
+	"platform_version": "v1.2",
+	"name": "Demo",
+	"author": "tris@trigger.io",
+	"version": "0.1",
+	"description": "My Extension Description (built on WebMynd)",
+	"permissions": ["tabs"],
+	"trigger": "document_end",
+	"background_files": [],
+	"browser_action": {
+        "default_popup": "index.html",
+		"default_icon": "img/logo-forge.png"
+    },
+	"activations": [
+		{
+			"patterns": ["http://*/*"],
+			"styles": [],
+			"scripts": []
+		}
+	],
+	"logging": {
+			"level": "INFO"
+	}
+}
+
