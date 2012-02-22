@@ -1,3 +1,9 @@
+.page {
+	position: absolute;
+	width: 320px;
+	min-height: 460;
+}
+
 body {
 	width: 320px;
 	height: 460px;
@@ -13,6 +19,7 @@ body {
 }
 
 .feed-even {
+	width: 320;
 	display: block;
 	min-height: 4px;
 	font: 16px tahoma, arial, helvetica;
@@ -27,6 +34,7 @@ body {
 }
 
 .feed-odd {
+	width: 320;
 	display: block;
     min-height: 4px;
     font:16px tahoma, arial, helvetica;
@@ -39,4 +47,9 @@ body {
 	border-color: black;
 	padding: 15px 20px 15px 10px;
 	font-weight: bold;
+}
+
+.date {
+	font-style: italic;
+	font-weight: normal;
 }

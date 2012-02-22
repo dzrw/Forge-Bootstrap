@@ -1,8 +1,8 @@
 var Demo = {
-	Models: {},
+	Models:      {},
 	Collections: {},
-	Views: {},
-	Utils: {},
+	Views:       {},
+	Utils:       {},
 
 	init: function () {
 		Demo.Utils.parseRSS(rss_url, function(data) {

@@ -5,12 +5,21 @@ Demo.Views.Page = Backbone.View.extend({
 		this.render();
 	},
 	show: function () {
+		direction_coefficiant = this.options.back? 1 : -1
 		var el = this.el;
-		if ($('.page, .loading').length) {
-			// TODO: reuse pages.
-			$('.page, .loading').not(el).remove();
+		if ($('.page').length) {
+			var $old = $('.page').not(el);
+			
+			//This fix was hard-won, just doing .css(property, '') doesn't work!
+			$old.get(0).style["margin-left"] = ""
+			$old.get(0).style["-webkit-transform"] = ""
+			
 			$(el).appendTo('body').hide();
-			$(el).show();
+			$(el).show().css({"margin-left": 320 * direction_coefficiant});
+			$(el).anim({translate3d: -320 * direction_coefficiant +'px,0,0'}, 0.3, 'linear');
+			$old.anim({translate3d: -320 * direction_coefficiant + 'px,0,0'}, 0.3, 'linear', function() {
+				$old.remove();
+			});
 		} else {
 			$(el).appendTo('body').hide();
 			$(el).show();
@@ -53,11 +62,12 @@ Demo.Views.Feed = Backbone.View.extend({
 	events: {
 		//TODO: click is sub-optimal on phones, use forge.is to use tap on phones
 		"click .feed-even": "expand_item",
-		"click.feed-odd" : "expand_item"
+		"click .feed-odd" : "expand_item"
 	},
 
 	expand_item: function () {
-		Demo.router.navigate("feed/" + this.model.get("slug"), true);
+		console.log(this.model.cid);
+		Demo.router.navigate("item/" + this.model.cid.split("").slice(1), true);
 	},
 
 	initialize: function() {
@@ -71,4 +81,44 @@ Demo.Views.Feed = Backbone.View.extend({
 							"</div>");
 		return this;
 	},
+});
+
+
+Demo.Views.Item = Demo.Views.Page.extend({
+
+	events: {
+		//TODO: click is sub-optimal on phones, use forge.is to use tap on phones
+		"click .item": "expand_item",
+		"click #back": "go_back"
+	},
+
+	expand_item: function () {
+		forge.tabs.open(this.model.get("link"));
+	},
+
+	initialize: function() {
+		this.render();
+	},
+
+	go_back: function() {
+		Demo.router.navigate("", true);
+	},
+	
+	render: function() {
+		var author = this.model.get("author");
+		var author_line = (author ? " by " + author : "");
+
+		$(this.el).append('<div id="back", class="feed-even">Back</div>');
+		
+		$(this.el).append('<li class="feed-odd">' +
+							this.model.get("title") +
+							'<div class="author">' +
+								author_line +
+							'</div>' +
+							'<div class="date">' +
+								this.model.get("publishedDate").split(" ").slice(0, -1).join(" ") +
+							'</div>' +
+						  '</li>');
+		return this;
+	}
 });
