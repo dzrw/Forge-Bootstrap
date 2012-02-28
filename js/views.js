@@ -5,10 +5,11 @@ Demo.Views.Page = Backbone.View.extend({
 		this.render();
 	},
 	show: function () {
+		$('.page').css({"position": "absolute"});
 		direction_coefficiant = this.options.back? 1 : -1
 		var el = this.el;
 		if ($('.page').length) {
-			$('body').css({"position": "absolute"})
+			
 			var $old = $('.page').not(el);
 			
 			//This fix was hard-won, just doing .css(property, '') doesn't work!
@@ -20,14 +21,15 @@ Demo.Views.Page = Backbone.View.extend({
 			$(el).anim({translate3d: -320 * direction_coefficiant +'px,0,0'}, 0.3, 'linear');
 			$old.anim({translate3d: -320 * direction_coefficiant + 'px,0,0'}, 0.3, 'linear', function() {
 				$old.remove();
-				$('body').css({"position": "relative"})
+				$('.page').css({"position": "static"});
 			});
 		} else {
 			$(el).appendTo('body').hide();
 			$(el).show();
 		}
 	window.scrollTo(0, 0);/* TODO: This is not cross platform. Jquery has
-							 .scrollTop(), but zepto does not. Port? */
+					 .scrollTop(), but zepto does not. Port? */
+	
 	}
 });
 

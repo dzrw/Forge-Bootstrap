@@ -1,12 +1,13 @@
 .page {
 	position: absolute;
 	width: 320px;
-	height: 460;
+	min-height: 460px;
 }
 
 body {
+	overflow-x: hidden;
 	width: 320px;
-	height: 460px;
+	min-height: 460px;
 	font-family: museo, Arial, Helvetica, sans-serif;
 	color:white;
 	-webkit-font-smoothing:antialiased;
