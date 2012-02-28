@@ -8,6 +8,7 @@ Demo.Views.Page = Backbone.View.extend({
 		direction_coefficiant = this.options.back? 1 : -1
 		var el = this.el;
 		if ($('.page').length) {
+			$('body').css({"position": "absolute"})
 			var $old = $('.page').not(el);
 			
 			//This fix was hard-won, just doing .css(property, '') doesn't work!
@@ -19,6 +20,7 @@ Demo.Views.Page = Backbone.View.extend({
 			$(el).anim({translate3d: -320 * direction_coefficiant +'px,0,0'}, 0.3, 'linear');
 			$old.anim({translate3d: -320 * direction_coefficiant + 'px,0,0'}, 0.3, 'linear', function() {
 				$old.remove();
+				$('body').css({"position": "relative"})
 			});
 		} else {
 			$(el).appendTo('body').hide();
@@ -59,21 +61,19 @@ Demo.Views.Index = Demo.Views.Page.extend({
 
 Demo.Views.Feed = Backbone.View.extend({
 
-	events: {
-		//TODO: click is sub-optimal on phones, use forge.is to use tap on phones
-		"click .feed-even": "expand_item",
-		"click .feed-odd" : "expand_item"
-	},
-
+	events: Demo.Utils.click_or_tap({
+		".feed-even": "expand_item",
+		".feed-odd" : "expand_item"
+	}),
+	
 	expand_item: function () {
-		console.log(this.model.cid);
 		Demo.router.navigate("item/" + this.model.cid.split("").slice(1), true);
 	},
-
+	
 	initialize: function() {
 		this.render();
 	},
-
+	
 	render: function() {
 		var feed_class = (this.options.odd? "feed-odd" : "feed-even");
 		$(this.el).append('<div class="' + feed_class + '">' +
@@ -86,11 +86,7 @@ Demo.Views.Feed = Backbone.View.extend({
 
 Demo.Views.Item = Demo.Views.Page.extend({
 
-	events: {
-		//TODO: click is sub-optimal on phones, use forge.is to use tap on phones
-		"click .item": "expand_item",
-		"click #back": "go_back"
-	},
+	events: Demo.Utils.click_or_tap({"#back": "go_back"}),
 
 	expand_item: function () {
 		forge.tabs.open(this.model.get("link"));
