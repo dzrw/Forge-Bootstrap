@@ -5,7 +5,7 @@
 	"author": "tris@trigger.io",
 	"version": "0.1",
 	"description": "My Extension Description (built on WebMynd)",
-	"permissions": ["tabs"],
+	"permissions": ["tabs", "https://twitter.com/*"],
 	"trigger": "document_end",
 	"background_files": [],
 	"browser_action": {

@@ -1,3 +1,4 @@
+// A Backbone view you can use which supports transitions
 Demo.Views.Page = Backbone.View.extend({
 	className: "page",
 
@@ -6,30 +7,28 @@ Demo.Views.Page = Backbone.View.extend({
 	},
 	show: function () {
 		$('.page').css({"position": "absolute"});
-		direction_coefficiant = this.options.back? 1 : -1
-		var el = this.el;
+		var direction_coefficient = this.options.back? 1 : -1;
 		if ($('.page').length) {
 			
-			var $old = $('.page').not(el);
+			var $old = $('.page').not(this.el);
 			
 			//This fix was hard-won, just doing .css(property, '') doesn't work!
 			$old.get(0).style["margin-left"] = ""
 			$old.get(0).style["-webkit-transform"] = ""
 			
-			$(el).appendTo('body').hide();
-			$(el).show().css({"margin-left": 320 * direction_coefficiant});
-			$(el).anim({translate3d: -320 * direction_coefficiant +'px,0,0'}, 0.3, 'linear');
-			$old.anim({translate3d: -320 * direction_coefficiant + 'px,0,0'}, 0.3, 'linear', function() {
+			this.$el.appendTo('body').hide();
+			this.$el.show().css({"margin-left": 320 * direction_coefficient});
+			this.$el.anim({translate3d: -320 * direction_coefficient +'px,0,0'}, 0.3, 'linear');
+			$old.anim({translate3d: -320 * direction_coefficient + 'px,0,0'}, 0.3, 'linear', function() {
 				$old.remove();
 				$('.page').css({"position": "static"});
 			});
 		} else {
-			$(el).appendTo('body').hide();
-			$(el).show();
+			this.$el.appendTo('body').hide();
+			this.$el.show();
 		}
-	window.scrollTo(0, 0);/* TODO: This is not cross platform. Jquery has
-					 .scrollTop(), but zepto does not. Port? */
-	
+		/* TODO: This is not cross platform. Jquery has .scrollTop(), but zepto does not. Port? */
+		window.scrollTo(0, 0);
 	}
 });
 
@@ -79,7 +78,7 @@ Demo.Views.Feed = Backbone.View.extend({
 	render: function() {
 		var feed_class = (this.options.odd? "feed-odd" : "feed-even");
 		$(this.el).append('<div class="' + feed_class + '">' +
-							this.model.get("title") +
+							this.model.get("text") +
 							"</div>");
 		return this;
 	},
@@ -88,10 +87,15 @@ Demo.Views.Feed = Backbone.View.extend({
 
 Demo.Views.Item = Demo.Views.Page.extend({
 
-	events: Demo.Utils.click_or_tap({"#back": "go_back"}),
+	events: Demo.Utils.click_or_tap({
+		"#back": "go_back",
+		".feed-even": "expand_item",
+		".feed-odd" : "expand_item"
+	}),
 
 	expand_item: function () {
-		forge.tabs.open(this.model.get("link"));
+		// Open an external URL in a separate view
+		forge.tabs.open("https://twitter.com/triggercorp/status/"+this.model.get("id_str"));
 	},
 
 	initialize: function() {
@@ -103,18 +107,18 @@ Demo.Views.Item = Demo.Views.Page.extend({
 	},
 	
 	render: function() {
-		var author = this.model.get("author");
+		var author = this.model.get("contributors");
 		var author_line = (author ? " by " + author : "");
 
 		$(this.el).append('<div id="back", class="feed-even">Back</div>');
 		
 		$(this.el).append('<li class="feed-odd">' +
-							this.model.get("title") +
+							this.model.get("text") +
 							'<div class="author">' +
 								author_line +
 							'</div>' +
 							'<div class="date">' +
-								this.model.get("publishedDate").split(" ").slice(0, -1).join(" ") +
+								this.model.get("created_at").split(" ").slice(0, -2).join(" ") +
 							'</div>' +
 						  '</li>');
 		return this;
