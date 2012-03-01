@@ -88,9 +88,9 @@ Demo.Views.Feed = Backbone.View.extend({
 Demo.Views.Item = Demo.Views.Page.extend({
 
 	events: Demo.Utils.click_or_tap({
-		"#back": "go_back",
-		".feed-even": "expand_item",
-		".feed-odd" : "expand_item"
+		"#back.feed-even": "go_back",
+		"#item.feed-even": "expand_item",
+		"#item.feed-odd" : "expand_item"
 	}),
 
 	expand_item: function () {
@@ -112,7 +112,7 @@ Demo.Views.Item = Demo.Views.Page.extend({
 
 		$(this.el).append('<div id="back", class="feed-even">Back</div>');
 		
-		$(this.el).append('<li class="feed-odd">' +
+		$(this.el).append('<li id="item", class="feed-odd">' +
 							this.model.get("text") +
 							'<div class="author">' +
 								author_line +
